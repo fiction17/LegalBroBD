@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>LegalBro</title>
+    <style>
+        body {
+            font-family: Arial;
+            max-width: 700px;
+            margin: 50px auto;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+        }
+        #result {
+            margin-top: 20px;
+            background: #f3f3f3;
+            padding: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>LegalBro</h2>
+
+<textarea id="inputText" placeholder="Paste your Legal query here"></textarea>
+<br>
+<button onclick="simplify()">Simplify</button>
+
+<div id="result"></div>
+
+<script>
+async function simplify()
+{
+    const text = document.getElementById("inputText").value;
+
+    const res = await fetch("/api/v1/legal/simplify",{
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ text: text })
+    });
+
+    const data = await res.json();
+
+    document.getElementById("result").innerText =
+        "Simplified:\n" + data.data.simplified;
+}
+</script>
+
+</body>
+</html>
