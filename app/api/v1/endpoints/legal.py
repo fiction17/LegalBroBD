@@ -1,9 +1,10 @@
 from fastapi import APIRouter
-from app.schemas.legal import LegalTextRequest
-from app.services.legal_service import simplify_text
+from app.services.rag_service import answer_question
 
 router = APIRouter()
 
+
 @router.post("/simplify")
-def simplify(request: LegalTextRequest):
-    return simplify_text(request.text)
+def simplify(data: dict):
+    query = data.get("text")
+    return {"data": answer_question(query)}
