@@ -1,30 +1,25 @@
-import pickle
 import numpy as np
+import pickle
+import faiss
 
-from app.rag.embedder import embed_texts
-from app.rag.vectorstore.faiss_store import load_faiss_index
+INDEX_PATH = "data/vectorstore/index.faiss"
+METADATA_PATH = "data/vectorstore/metadata.pkl"
 
 
-class Retriever:
-    def __init__(self):
-        self.index = load_faiss_index()
+def retrieve(query_embedding, top_k=5):
+    index = faiss.read_index(INDEX_PATH)
 
-        with open("app/rag/vectorstore/chunks.pkl", "rb") as f:
-            self.chunks = pickle.load(f)
+    with open(METADATA_PATH, "rb") as f:
+        metadata = pickle.load(f)
 
-    def retrieve(self, query: str, top_k: int = 5):
-        # 1. Embed query
-        query_embedding = embed_texts([query])[0]
+    query = np.array([query_embedding]).astype("float32")
 
-        query_embedding = np.array([query_embedding]).astype("float32")
+    distances, indices = index.search(query, top_k * 2)  # get more
 
-        # 2. Search FAISS
-        distances, indices = self.index.search(query_embedding, top_k)
+    docs = []
 
-        # 3. Get chunks
-        results = []
-        for idx in indices[0]:
-            if idx < len(self.chunks):
-                results.append(self.chunks[idx])
+    for i, dist in zip(indices[0], distances[0]):
+        if i < len(metadata) and dist < 2:  # 🔥 FILTER
+            docs.append(metadata[i]["text"])
 
-        return results
+    return docs[:top_k]

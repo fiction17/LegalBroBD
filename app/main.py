@@ -18,6 +18,10 @@ templates = Jinja2Templates(directory="./app/templates")
 
 app.include_router(legal.router, prefix="/api/v1/legal")
 
+@app.get("/")
+def root():
+    return {"message": "RAG API running"}
+
 
 @app.get("/")
 def home(request: Request):

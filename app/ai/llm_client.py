@@ -10,15 +10,19 @@ client = OpenAI(
 )
 
 
-def call_llm(prompt=None, messages=None, model="stepfun/step-3.5-flash:free") -> str:
+def call_llm(prompt=None, messages=None, model="nvidia/nemotron-3-super-120b-a12b:free"):
     try:
         if messages is None and prompt is not None:
             messages = [
-                {"role": "user", "content": prompt}
+                {"role": "user", "content": str(prompt)}
             ]
 
         if messages is None:
             raise ValueError("Either 'prompt' or 'messages' must be provided")
+
+        # 🔥 Ensure all contents are strings
+        for m in messages:
+            m["content"] = str(m["content"])
 
         response = client.chat.completions.create(
             model=model,
@@ -26,7 +30,7 @@ def call_llm(prompt=None, messages=None, model="stepfun/step-3.5-flash:free") ->
             temperature=0.3,
         )
 
-        return response.choices[0].message.content
+        return response.choices[0].message.content or "⚠️ Empty response"
 
     except Exception as e:
         return f"error occured: {str(e)}"

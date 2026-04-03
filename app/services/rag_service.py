@@ -1,18 +1,15 @@
-from app.rag.retrieval.retriever import Retriever
-from app.rag.prompts.legal_prompt import build_prompt
-from app.ai.llm_client import call_llm
+from app.rag.retrieval.retriever import retrieve
+from app.rag.embedder import embed_query
+from app.services.llm_service import generate_answer
 
-retriever = Retriever()
 
-def answer_question(query: str):
-    contexts = retriever.retrieve(query)
+def answer_question(question):
+    query_embedding = embed_query(question)
 
-    prompt = build_prompt(query, contexts)
+    docs = retrieve(query_embedding)
 
-    response = call_llm(prompt)
+    context = "\n\n---\n\n".join(docs[:3])
 
-    return {
-        "question": query,
-        "answer": response,
-        "sources": contexts
-    }
+    answer = generate_answer(question, context)
+
+    return answer, docs
