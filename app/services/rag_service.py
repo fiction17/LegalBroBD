@@ -1,5 +1,5 @@
 from app.rag.retrieval.retriever import retrieve
-from app.rag.embedder import embed_query
+from app.rag.fastembed import embed_query
 from app.services.llm_service import generate_answer
 
 

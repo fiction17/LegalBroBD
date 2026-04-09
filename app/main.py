@@ -24,7 +24,7 @@ def root():
     return {"message": "RAG API running"}
 
 
-@app.get("/")
+@app.get("/home")
 def home(request: Request):
     return templates.TemplateResponse(
         request=request,

@@ -8,7 +8,7 @@ DO NOT say "Not found" until the context is too irrelevant.
 
 Rules:
 - Do NOT hallucinate
-- If answer not found → say "Not found in context"
+- If answer not found → "Build answer from context and add caution in the end"
 - Keep answer precise
 - Cite concepts clearly
 """
