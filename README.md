@@ -1,4 +1,4 @@
-# ⚖️ LegalBro API (Backend)
+# ⚖️ LegalBro - AI Agent
 
 LegalBro is an AI-powered legal assistant focused on **Bangladeshi law and constitution**.  
 It uses a **Retrieval-Augmented Generation (RAG)** system to provide accurate, context-aware answers from legal documents, simplified into plain English.
