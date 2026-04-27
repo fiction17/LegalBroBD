@@ -28,30 +28,6 @@ It uses a **Retrieval-Augmented Generation (RAG)** system to provide accurate, c
    * Keyword filtering (precision boost)
 6. 🤖 LLM generates answers grounded in retrieved context  
 
----
-
-## 📁 Project Structure
-
----
-
-app/
-├── rag/
-│ ├── ingest/ # PDF loading, cleaning, chunking
-│ ├── retrieval/ # Hybrid retrieval logic
-│ ├── vectorstore/ # FAISS + metadata
-│ └── embedder.py
-├── services/ # RAG + LLM orchestration
-├── ai/ # LLM integration
-├── api/ # API routes
-└── main.py # FastAPI entry point
-
-data/
-├── processed/ # chunks.json
-└── vectorstore/ # index.faiss, metadata.pkl
-
-
----
-
 ## ⚙️ Setup
 
 ### 1. Clone repo
